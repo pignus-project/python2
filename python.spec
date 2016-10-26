@@ -796,27 +796,7 @@ Patch5000: 05000-autotool-intermediates.patch
 # Additional metadata, and subpackages
 # ======================================================
 
-%if %{main_python}
 Provides: python2 = %{version}
-Obsoletes: python-elementtree <= 1.2.6
-Obsoletes: python-ordereddict <= 1.1-8
-Obsoletes: python-sqlite < 2.3.2
-Provides: python-sqlite = 2.3.2
-Obsoletes: python-ctypes < 1.0.1
-Provides: python-ctypes = 1.0.1
-Obsoletes: python-hashlib < 20081120
-Provides: python-hashlib = 20081120
-Obsoletes: python-uuid < 1.31
-Provides: python-uuid = 1.31
-# obsolete, not provide PyXML as proposed in feature
-# https://fedoraproject.org/wiki/Features/RemovePyXML#How_To_Test
-Obsoletes: PyXML <= 0.8.4-29
-
-# python-argparse is part of python as of version 2.7
-# drop this Provides in F17
-# (having Obsoletes here caused problems with multilib; see rhbz#667984)
-Provides:   python-argparse = %{version}-%{release}
-%endif
 Provides:   python27 = %{version}-%{release}
 
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
