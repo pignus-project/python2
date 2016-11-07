@@ -167,11 +167,11 @@ BuildRequires: valgrind-devel
 BuildRequires: zlib-devel
 
 %if 0%{?with_rewheel}
-BuildRequires: python-setuptools
-BuildRequires: python-pip
+BuildRequires: python2-setuptools
+BuildRequires: python2-pip
 
-Requires: python-setuptools
-Requires: python-pip
+Requires: python2-setuptools
+Requires: python2-pip
 %endif
 
 
