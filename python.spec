@@ -6,7 +6,12 @@
 
 %global unicode ucs4
 
-%global python python
+%global python python2
+
+# Macro for using the version-release where python got
+# renamed to python2 at Fedora 26, in order to ensure clean upgrade path.
+# It should be removed along with the obsoletes at Fedora 28.
+%global obs 2.7.12-9
 
 %global pybasever 2.7
 %global pylibdir %{_libdir}/python%{pybasever}
@@ -98,7 +103,7 @@ Summary: An interpreted, interactive, object-oriented programming language
 Name: %{python}
 # Remember to also rebase python-docs when changing this:
 Version: 2.7.12
-Release: 8%{?dist}
+Release: 9%{?dist}
 License: Python
 Group: Development/Languages
 Requires: %{python}-libs%{?_isa} = %{version}-%{release}
@@ -786,7 +791,12 @@ Patch5000: 05000-autotool-intermediates.patch
 # Additional metadata, and subpackages
 # ======================================================
 
-Provides: python2 = %{version}
+Provides: python = %{version}-%{release}
+Provides: python%{?_isa} = %{version}-%{release}
+Obsoletes: python < %{obs}
+
+# Providing python27 as now multiple interpreters exist in Fedora
+# alongside the system one e.g. python26, python33 etc
 Provides:   python27 = %{version}-%{release}
 
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
@@ -824,6 +834,10 @@ Group: Applications/System
 # yet upgraded expat:
 Requires: expat >= 2.1.0
 
+Provides: python-libs = %{version}-%{release}
+Provides: python-libs%{?_isa} = %{version}-%{release}
+Obsoletes: python-libs < %{obs}
+
 %description libs
 This package contains runtime libraries for use by Python:
 - the libpython dynamic library, for use by applications that embed Python as
@@ -841,6 +855,10 @@ Requires: pkgconfig
 # package
 Conflicts: %{python} < %{version}-%{release}
 
+Provides: python-devel = %{version}-%{release}
+Provides: python-devel%{?_isa} = %{version}-%{release}
+Obsoletes: python-devel < %{obs}
+
 %description devel
 The Python programming language's interpreter can be extended with
 dynamically loaded extensions and can be embedded in other programs.
@@ -856,19 +874,31 @@ documentation.
 Summary: A collection of development tools included with Python
 Group: Development/Tools
 Requires: %{name} = %{version}-%{release}
-Requires: %{tkinter} = %{version}-%{release}
+Requires: %{python}-tkinter = %{version}-%{release}
+
+Provides: python-tools = %{version}-%{release}
+Provides: python-tools%{?_isa} = %{version}-%{release}
+Obsoletes: python-tools < %{obs}
 
 %description tools
 This package includes several tools to help with the development of Python
 programs, including IDLE (an IDE with editing and debugging facilities), a
 color editor (pynche), and a python gettext program (pygettext.py).
 
-%package -n %{tkinter}
+%package tkinter
 Summary: A graphical user interface for the Python scripting language
 Group: Development/Languages
 Requires: %{name} = %{version}-%{release}
 
-%description -n %{tkinter}
+Provides: tkinter = %{version}-%{release}
+Provides: tkinter%{?_isa} = %{version}-%{release}
+Provides: tkinter2 = %{version}-%{release}
+Provides: tkinter2%{?_isa} = %{version}-%{release}
+Provides: python-tkinter = %{version}-%{release}
+Provides: python-tkinter%{?_isa} = %{version}-%{release}
+Obsoletes: tkinter < %{obs}
+
+%description tkinter
 
 The Tkinter (Tk interface) program is an graphical user interface for
 the Python scripting language.
@@ -880,6 +910,10 @@ user interface for Python programming.
 Summary: The test modules from the main python package
 Group: Development/Languages
 Requires: %{name} = %{version}-%{release}
+
+Provides: python-test = %{version}-%{release}
+Provides: python-test%{?_isa} = %{version}-%{release}
+Obsoletes: python-test < %{obs}
 
 %description test
 
@@ -902,8 +936,12 @@ Requires: %{name}%{?_isa} = %{version}-%{release}
 Requires: %{name}-libs%{?_isa} = %{version}-%{release}
 Requires: %{name}-devel%{?_isa} = %{version}-%{release}
 Requires: %{name}-test%{?_isa} = %{version}-%{release}
-Requires: tkinter%{?_isa} = %{version}-%{release}
+Requires: %{python}-tkinter%{?_isa} = %{version}-%{release}
 Requires: %{name}-tools%{?_isa} = %{version}-%{release}
+
+Provides: python-debug = %{version}-%{release}
+Provides: python-debug%{?_isa} = %{version}-%{release}
+Obsoletes: python-debug < %{obs}
 
 %description debug
 python-debug provides a version of the Python runtime with numerous debugging
@@ -1532,8 +1570,8 @@ rm -fr %{buildroot}
 %license LICENSE
 %doc README
 %{_bindir}/pydoc*
+%{_bindir}/python
 %{_bindir}/%{python}
-%{_bindir}/python2
 %{_bindir}/python%{pybasever}
 %{_mandir}/*/*
 
@@ -1721,7 +1759,7 @@ rm -fr %{buildroot}
 %{demo_dir}
 %{pylibdir}/Doc
 
-%files -n %{tkinter}
+%files tkinter
 %defattr(-,root,root,755)
 %{pylibdir}/lib-tk
 %{dynload_dir}/_tkinter.so
@@ -1754,8 +1792,8 @@ rm -fr %{buildroot}
 %defattr(-,root,root,-)
 
 # Analog of the core subpackage's files:
+%{_bindir}/python-debug
 %{_bindir}/%{python}-debug
-%{_bindir}/python2-debug
 %{_bindir}/python%{pybasever}-debug
 
 # Analog of the -libs subpackage's files, with debug builds of the built-in
@@ -1890,6 +1928,12 @@ rm -fr %{buildroot}
 # ======================================================
 
 %changelog
+* Thu Oct 27 2016 Charalampos Stratakis <cstratak@redhat.com> - 2.7.12-9
+- Rename package to python2 and also rename the subpackages accordingly
+- Provide and obsolete python and the respective subpackages to ensure a clean
+upgrade path
+- Remove old provides for packages that got into stdlib
+
 * Wed Oct 12 2016 Charalampos Stratakis <cstratak@redhat.com> - 2.7.12-8
 - Port ssl and hashlib modules to OpenSSL 1.1.0
 - Drop hashlib patch for now
