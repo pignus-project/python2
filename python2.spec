@@ -107,7 +107,6 @@ Release: 9%{?dist}
 License: Python
 Group: Development/Languages
 Requires: %{python}-libs%{?_isa} = %{version}-%{release}
-Provides: python-abi = %{pybasever}
 Provides: python(abi) = %{pybasever}
 
 
