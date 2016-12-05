@@ -1375,6 +1375,33 @@ find . -name ".cvsignore"|xargs rm -f
 #zero length
 rm -f %{buildroot}%{pylibdir}/LICENSE.txt
 
+
+# Provide binaries in the form of bin2 and bin2.7, thus implementing
+# (and expanding) the recommendations of PEP 394.
+mv %{buildroot}%{_bindir}/idle %{buildroot}%{_bindir}/idle%{pybasever}
+ln -s ./idle%{pybasever} %{buildroot}%{_bindir}/idle2
+ln -s ./idle2 %{buildroot}%{_bindir}/idle
+
+mv %{buildroot}%{_bindir}/pynche %{buildroot}%{_bindir}/pynche%{pybasever}
+ln -s ./pynche%{pybasever} %{buildroot}%{_bindir}/pynche2
+ln -s ./pynche2 %{buildroot}%{_bindir}/pynche
+
+mv %{buildroot}%{_bindir}/pydoc %{buildroot}%{_bindir}/pydoc%{pybasever}
+ln -s ./pydoc%{pybasever} %{buildroot}%{_bindir}/pydoc2
+ln -s ./pydoc2 %{buildroot}%{_bindir}/pydoc
+
+mv %{buildroot}%{_bindir}/pygettext.py %{buildroot}%{_bindir}/pygettext%{pybasever}.py
+ln -s ./pygettext%{pybasever}.py %{buildroot}%{_bindir}/pygettext2.py
+ln -s ./pygettext2.py %{buildroot}%{_bindir}/pygettext.py
+
+mv %{buildroot}%{_bindir}/msgfmt.py %{buildroot}%{_bindir}/msgfmt%{pybasever}.py
+ln -s ./msgfmt%{pybasever}.py %{buildroot}%{_bindir}/msgfmt2.py
+ln -s ./msgfmt2.py %{buildroot}%{_bindir}/msgfmt.py
+
+mv %{buildroot}%{_bindir}/smtpd.py %{buildroot}%{_bindir}/smtpd%{pybasever}.py
+ln -s ./smtpd%{pybasever}.py %{buildroot}%{_bindir}/smtpd2.py
+ln -s ./smtpd2.py %{buildroot}%{_bindir}/smtpd.py
+
 # Fix for bug #136654
 rm -f %{buildroot}%{pylibdir}/email/test/data/audiotest.au %{buildroot}%{pylibdir}/test/audiotest.au
 
@@ -1932,6 +1959,7 @@ rm -fr %{buildroot}
 - Provide and obsolete python and the respective subpackages to ensure a clean
 upgrade path
 - Remove old provides for packages that got into stdlib
+- Implement PEP 394
 
 * Wed Oct 12 2016 Charalampos Stratakis <cstratak@redhat.com> - 2.7.12-8
 - Port ssl and hashlib modules to OpenSSL 1.1.0
