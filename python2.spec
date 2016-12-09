@@ -800,7 +800,7 @@ Provides:   python27 = %{version}-%{release}
 
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-URL: http://www.python.org/
+URL: https://www.python.org/
 
 %description
 Python is an interpreted, interactive, object-oriented programming
