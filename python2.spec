@@ -741,9 +741,7 @@ Patch191: 00191-disable-NOOP.patch
 Patch193: 00193-enable-loading-sqlite-extensions.patch
 
 # 00198 #
-%if 0%{with_rewheel}
 Patch198: 00198-add-rewheel-module.patch
-%endif
 
 # 00200 #
 # test_gdb.test_threads fails when run within rpmbuild
