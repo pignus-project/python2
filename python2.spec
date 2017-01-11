@@ -803,6 +803,9 @@ Group: Applications/System
 # yet upgraded expat:
 Requires: expat >= 2.1.0
 
+# Python built with glibc >= 2.24.90-26 needs to require it (rhbz#1410644).
+Requires: glibc%{?_isa} >= 2.24.90-26
+
 Provides: python-libs = %{version}-%{release}
 Provides: python-libs%{?_isa} = %{version}-%{release}
 Obsoletes: python-libs < %{obs}
@@ -1924,6 +1927,7 @@ rm -fr %{buildroot}
 * Wed Jan 11 2017 Charalampos Stratakis <cstratak@redhat.com> - 2.7.13-1
 - Update to 2.7.13
 - Don't blow up on EL7 kernel (random generator) (rhbz#1410175, rhbz#1410187)
+- Require glibc >= 2.24.90-26 (rhbz#1410644)
 
 * Thu Oct 27 2016 Charalampos Stratakis <cstratak@redhat.com> - 2.7.12-9
 - Rename package to python2 and also rename the subpackages accordingly
