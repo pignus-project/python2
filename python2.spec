@@ -735,11 +735,12 @@ Patch193: 00193-enable-loading-sqlite-extensions.patch
 # 00198 #
 Patch198: 00198-add-rewheel-module.patch
 
-# 00200 #
-# test_gdb.test_threads fails when run within rpmbuild
-# I couldnt reproduce the issue outside of rpmbuild, therefore
-# I skip test for now
-Patch200: 00200-skip-thread-test.patch
+# 00250 #
+# After  glibc-2.24.90, Python failed to start on EL7 kernel
+# rhbz#1410175: https://bugzilla.redhat.com/show_bug.cgi?id=1410175
+# http://bugs.python.org/issue29157
+# Fixed upstream: https://hg.python.org/cpython/rev/13a39142c047
+Patch250: 00250-getentropy.patch
 
 # (New patches go here ^^^)
 #
@@ -1055,6 +1056,8 @@ mv Modules/cryptmodule.c Modules/_cryptmodule.c
 %if 0%{with_rewheel}
 %patch198 -p1
 %endif
+
+%patch250 -p1
 
 
 # This shouldn't be necesarry, but is right now (2.2a3)
@@ -1920,6 +1923,7 @@ rm -fr %{buildroot}
 %changelog
 * Wed Jan 11 2017 Charalampos Stratakis <cstratak@redhat.com> - 2.7.13-1
 - Update to 2.7.13
+- Don't blow up on EL7 kernel (random generator) (rhbz#1410175, rhbz#1410187)
 
 * Thu Oct 27 2016 Charalampos Stratakis <cstratak@redhat.com> - 2.7.12-9
 - Rename package to python2 and also rename the subpackages accordingly
