@@ -103,7 +103,7 @@ Summary: An interpreted, interactive, object-oriented programming language
 Name: %{python}
 # Remember to also rebase python-docs when changing this:
 Version: 2.7.13
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: Python
 Group: Development/Languages
 Requires: %{python}-libs%{?_isa} = %{version}-%{release}
@@ -1924,6 +1924,9 @@ rm -fr %{buildroot}
 # ======================================================
 
 %changelog
+* Thu Jan 12 2017 Igor Gnatenko <ignatenko@redhat.com> - 2.7.13-2
+- Rebuild for readline 7.x
+
 * Wed Jan 11 2017 Charalampos Stratakis <cstratak@redhat.com> - 2.7.13-1
 - Update to 2.7.13
 - Don't blow up on EL7 kernel (random generator) (rhbz#1410175, rhbz#1410187)
