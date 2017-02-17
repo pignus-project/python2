@@ -8,10 +8,10 @@
 
 %global python python2
 
-# Macro for using the version-release where python got
-# renamed to python2 at Fedora 26, in order to ensure clean upgrade path.
-# It should be removed along with the obsoletes at Fedora 28.
-%global obs 2.7.12-9
+# Macro for using a version-release which will obsolete python for
+# Fedora 24 and 25, in order to ensure a clean upgrade path to Fedora 26.
+# It should be removed along with the obsolete tags at Fedora 28.
+%global obs 2.7.13-2
 
 %global pybasever 2.7
 %global pylibdir %{_libdir}/python%{pybasever}
@@ -103,7 +103,7 @@ Summary: An interpreted, interactive, object-oriented programming language
 Name: %{python}
 # Remember to also rebase python-docs when changing this:
 Version: 2.7.13
-Release: 3%{?dist}
+Release: 4%{?dist}
 License: Python
 Group: Development/Languages
 Requires: %{python}-libs%{?_isa} = %{version}-%{release}
@@ -1924,6 +1924,9 @@ rm -fr %{buildroot}
 # ======================================================
 
 %changelog
+* Fri Feb 17 2017 Charalampos Stratakis <cstratak@redhat.com> - 2.7.13-4
+- Fix the upgrade path to F26 due to renaming the package to python2 (rhbz#1420332)
+
 * Sat Feb 11 2017 Fedora Release Engineering <releng@fedoraproject.org> - 2.7.13-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_26_Mass_Rebuild
 
