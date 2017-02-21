@@ -103,7 +103,7 @@ Summary: An interpreted, interactive, object-oriented programming language
 Name: %{python}
 # Remember to also rebase python-docs when changing this:
 Version: 2.7.13
-Release: 4%{?dist}
+Release: 5%{?dist}
 License: Python
 Group: Development/Languages
 Requires: %{python}-libs%{?_isa} = %{version}-%{release}
@@ -742,6 +742,11 @@ Patch198: 00198-add-rewheel-module.patch
 # Fixed upstream: https://hg.python.org/cpython/rev/13a39142c047
 Patch250: 00250-getentropy.patch
 
+# 00252
+# Add executable option to install.py command to make it work for
+# scripts specified as an entry_points
+Patch252: 00252-add-executable-option.patch
+
 # (New patches go here ^^^)
 #
 # When adding new patches to "python" and "python3" in Fedora, EL, etc.,
@@ -1061,6 +1066,7 @@ mv Modules/cryptmodule.c Modules/_cryptmodule.c
 %endif
 
 %patch250 -p1
+%patch252 -p1
 
 
 # This shouldn't be necesarry, but is right now (2.2a3)
@@ -1924,6 +1930,9 @@ rm -fr %{buildroot}
 # ======================================================
 
 %changelog
+* Tue Feb 21 2017 Michal Cyprian <mcyprian@redhat.com> - 2.7.13-5
+- Add --executable option to install.py command
+
 * Fri Feb 17 2017 Charalampos Stratakis <cstratak@redhat.com> - 2.7.13-4
 - Fix the upgrade path to F26 due to renaming the package to python2 (rhbz#1420332)
 
